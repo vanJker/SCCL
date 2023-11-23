@@ -5,11 +5,11 @@
 /* Kenneth C. Louden                                */
 /****************************************************/
 
-#include "globals.h"
 #include "parse.h"
+
+#include "globals.h"
 #include "scan.h"
 #include "util.h"
-
 
 static TokenType token; /* holds current token */
 
@@ -98,13 +98,11 @@ TreeNode* if_stmt(void) {
   TreeNode* t = newStmtNode(IfK);
   match(IF);
   if (t != NULL) t->child[0] = exp();
-  match(THEN);
   if (t != NULL) t->child[1] = stmt_sequence();
   if (token == ELSE) {
     match(ELSE);
     if (t != NULL) t->child[2] = stmt_sequence();
   }
-  match(END);
   return t;
 }
 
