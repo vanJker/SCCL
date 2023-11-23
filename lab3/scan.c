@@ -5,10 +5,10 @@
 /* Kenneth C. Louden                                */
 /****************************************************/
 
-#include "globals.h"
 #include "scan.h"
-#include "util.h"
 
+#include "globals.h"
+#include "util.h"
 
 /* states in scanner DFA */
 typedef enum { START, INASSIGN, INCOMMENT, INNUM, INID, DONE } StateType;
@@ -55,8 +55,10 @@ static struct {
   char* str;
   TokenType tok;
 } reservedWords[MAXRESERVED] = {
-    {"if", IF},         {"then", THEN},   {"else", ELSE}, {"end", END},
-    {"repeat", REPEAT}, {"until", UNTIL}, {"read", READ}, {"write", WRITE}};
+    {"if", IF},         {"then", THEN},   {"else", ELSE},     {"end", END},
+    {"repeat", REPEAT}, {"until", UNTIL}, {"read", READ},     {"write", WRITE},
+    {"for", FOR},       {"to", TO},       {"downto", DOWNTO}, {"do", DO},
+    {"enddo", ENDDO}};
 
 /* lookup an identifier to see if it is a reserved word */
 /* uses linear search */

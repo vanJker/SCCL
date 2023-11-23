@@ -3,12 +3,11 @@
   test new if statement grammer
 }
 read x; { input an integer }
-if (0 < x) { don't compute if x <= 0 }
+for x := 1 to 0 do { don't compute if x <= 0 }
   fact := 1;
   repeat
     fact := fact * x;
     x := x - 1
   until x = 0;
   write fact  { output factorial of x }
-else
-  fact := 2
+enddo

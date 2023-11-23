@@ -25,6 +25,7 @@ static TreeNode* exp(void);
 static TreeNode* simple_exp(void);
 static TreeNode* term(void);
 static TreeNode* factor(void);
+static TreeNode* for_stmt(void);
 
 static void syntaxError(char* message) {
   fprintf(listing, "\n>>> ");
@@ -36,6 +37,7 @@ static void match(TokenType expected) {
   if (token == expected)
     token = getToken();
   else {
+    fprintf(listing, "%d %d", expected, token);
     syntaxError("unexpected token -> ");
     printToken(token, tokenString);
     fprintf(listing, "      ");
@@ -43,12 +45,14 @@ static void match(TokenType expected) {
 }
 
 TreeNode* stmt_sequence(void) {
+  // fprintf(listing, "stmt start: %d\n", token);
   TreeNode* t = statement();
   TreeNode* p = t;
   while ((token != ENDFILE) && (token != END) && (token != ELSE) &&
-         (token != UNTIL)) {
+         (token != UNTIL) && (token != ENDDO)) {
     TreeNode* q;
     match(SEMI);
+    // fprintf(listing, "stmt before: %d\n", token);
     q = statement();
     if (q != NULL) {
       if (t == NULL)
@@ -59,6 +63,7 @@ TreeNode* stmt_sequence(void) {
         p = q;
       }
     }
+    // fprintf(listing, "stmt after: %d\n", token);
   }
   return t;
 }
@@ -83,7 +88,11 @@ TreeNode* statement(void) {
     case WRITE:
       t = write_stmt();
       break;
+    case FOR:
+      t = for_stmt();
+      break;
     default:
+      // fprintf(listing, "statement: %d\n", token);
       syntaxError("unexpected token -> ");
       printToken(token, tokenString);
       token = getToken();
@@ -210,6 +219,21 @@ TreeNode* factor(void) {
       token = getToken();
       break;
   }
+  return t;
+}
+
+TreeNode* for_stmt(void) {
+  TreeNode* t = newStmtNode(ForK);
+  match(FOR);
+  if (t != NULL) t->child[0] = assign_stmt();
+  if (token == TO)
+    match(TO);
+  else if (token == DOWNTO)
+    match(DOWNTO);
+  if (t != NULL) t->child[1] = exp();
+  match(DO);
+  if (t != NULL) t->child[2] = stmt_sequence();
+  match(ENDDO);
   return t;
 }
 

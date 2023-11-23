@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "*clang-format*": "yaml",
-        "globals.h": "c"
+        "globals.h": "c",
+        "util.h": "c",
+        "scan.h": "c"
     }
 }

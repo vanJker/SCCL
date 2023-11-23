@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #ifndef FALSE
 #define FALSE 0
 #endif
@@ -24,7 +23,7 @@
 #endif
 
 /* MAXRESERVED = the number of reserved words */
-#define MAXRESERVED 8
+#define MAXRESERVED (8 + 5)
 
 typedef enum
 /* book-keeping tokens */
@@ -39,6 +38,11 @@ typedef enum
   UNTIL,
   READ,
   WRITE,
+  FOR,
+  TO,
+  DOWNTO,
+  DO,
+  ENDDO,
   /* multicharacter tokens */
   ID,
   NUM,
@@ -65,7 +69,7 @@ extern int lineno; /* source line number for listing */
 /**************************************************/
 
 typedef enum { StmtK, ExpK } NodeKind;
-typedef enum { IfK, RepeatK, AssignK, ReadK, WriteK } StmtKind;
+typedef enum { IfK, RepeatK, AssignK, ReadK, WriteK, ForK } StmtKind;
 typedef enum { OpK, ConstK, IdK } ExpKind;
 
 /* ExpType is used for type checking */
