@@ -113,7 +113,12 @@ TokenType getToken(void) { /* index for storing into tokenString */
               currentToken = LT;
               break;
             case '+':
-              currentToken = PLUS;
+              if ((c = getNextChar()) == '=') {
+                currentToken = PLUSASSIGN;
+              } else {
+                ungetNextChar();
+                currentToken = PLUS;
+              }
               break;
             case '-':
               currentToken = MINUS;

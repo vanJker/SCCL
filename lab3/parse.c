@@ -130,7 +130,12 @@ TreeNode* assign_stmt(void) {
   TreeNode* t = newStmtNode(AssignK);
   if ((t != NULL) && (token == ID)) t->attr.name = copyString(tokenString);
   match(ID);
-  match(ASSIGN);
+  if (token == ASSIGN) {
+    match(ASSIGN);
+  } else if (token == PLUSASSIGN) {
+    match(PLUSASSIGN);
+    t->kind.stmt = PlusAssignK;
+  }
   if (t != NULL) t->child[0] = exp();
   return t;
 }

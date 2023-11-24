@@ -173,6 +173,9 @@ void printTree(TreeNode *tree) {
         case ForK:
           fprintf(listing, "For\n");
           break;
+        case PlusAssignK:
+          fprintf(listing, "Plus Assign to: %s\n", tree->attr.name);
+          break;
         default:
           fprintf(listing, "Unknown ExpNode kind\n");
           break;
@@ -195,7 +198,9 @@ void printTree(TreeNode *tree) {
       }
     } else
       fprintf(listing, "Unknown node kind\n");
-    for (i = 0; i < MAXCHILDREN; i++) printTree(tree->child[i]);
+    for (i = 0; i < MAXCHILDREN; i++) {
+      if (tree->child[i] != NULL) printTree(tree->child[i]);
+    }
     tree = tree->sibling;
   }
   UNINDENT;
