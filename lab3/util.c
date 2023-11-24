@@ -45,6 +45,9 @@ void printToken(TokenType token, const char *tokenString) {
     case LE:
       fprintf(listing, "<=\n");
       break;
+    case GE:
+      fprintf(listing, ">=\n");
+      break;
     case LPAREN:
       fprintf(listing, "(\n");
       break;

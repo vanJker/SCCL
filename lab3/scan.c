@@ -118,7 +118,12 @@ TokenType getToken(void) { /* index for storing into tokenString */
               }
               break;
             case '>':
-              currentToken = GT;
+              if ((c = getNextChar()) == '=') {
+                currentToken = GE;
+              } else {
+                ungetNextChar();
+                currentToken = GT;
+              }
               break;
             case '+':
               if ((c = getNextChar()) == '=') {

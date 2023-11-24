@@ -53,6 +53,7 @@ typedef enum
   LT,
   GT,
   LE,
+  GE,
   PLUS,
   MINUS,
   TIMES,
