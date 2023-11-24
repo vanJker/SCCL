@@ -172,7 +172,7 @@ TreeNode* exp(void) {
 
 TreeNode* simple_exp(void) {
   TreeNode* t = term();
-  while ((token == PLUS) || (token == MINUS)) {
+  while ((token == PLUS) || (token == MINUS) || (token == MOD)) {
     TreeNode* p = newExpNode(OpK);
     if (p != NULL) {
       p->child[0] = t;

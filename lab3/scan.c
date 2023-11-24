@@ -132,6 +132,9 @@ TokenType getToken(void) { /* index for storing into tokenString */
             case '(':
               currentToken = LPAREN;
               break;
+            case '%':
+              currentToken = MOD;
+              break;
             case ')':
               currentToken = RPAREN;
               break;

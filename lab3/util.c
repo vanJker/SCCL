@@ -60,6 +60,9 @@ void printToken(TokenType token, const char *tokenString) {
     case OVER:
       fprintf(listing, "/\n");
       break;
+    case MOD:
+      fprintf(listing, "%%\n");
+      break;
     case ENDFILE:
       fprintf(listing, "EOF\n");
       break;
