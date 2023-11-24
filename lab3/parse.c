@@ -187,7 +187,7 @@ TreeNode* simple_exp(void) {
 
 TreeNode* term(void) {
   TreeNode* t = factor();
-  while ((token == TIMES) || (token == OVER)) {
+  while ((token == TIMES) || (token == OVER) || (token == POW)) {
     TreeNode* p = newExpNode(OpK);
     if (p != NULL) {
       p->child[0] = t;

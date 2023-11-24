@@ -56,6 +56,7 @@ typedef enum
   TIMES,
   OVER,
   MOD,
+  POW,
   LPAREN,
   RPAREN,
   SEMI } TokenType;

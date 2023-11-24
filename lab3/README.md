@@ -13,3 +13,4 @@
      - if_stmt -> if (exp) stmt-sequence else stmt-sequence
    - 扩充加法赋值运算符号 +=
    - 扩充求余运算符 %，优先级等同于 +、-
+   - 扩充乘方运算符 ^，优先级等同于 *、/
