@@ -52,6 +52,7 @@ typedef enum
   EQ,
   LT,
   GT,
+  LE,
   PLUS,
   MINUS,
   TIMES,

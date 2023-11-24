@@ -110,7 +110,12 @@ TokenType getToken(void) { /* index for storing into tokenString */
               currentToken = EQ;
               break;
             case '<':
-              currentToken = LT;
+              if ((c = getNextChar()) == '=') {
+                currentToken = LE;
+              } else {
+                ungetNextChar();
+                currentToken = LT;
+              }
               break;
             case '>':
               currentToken = GT;
