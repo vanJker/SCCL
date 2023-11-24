@@ -11,6 +11,10 @@
    - 改写语法：
      - if_stmt -> if (exp) stmt-sequence
      - if_stmt -> if (exp) stmt-sequence else stmt-sequence
+2. 增加 for 循环语句
+3. 扩充算术表达式的运算符号
    - 扩充加法赋值运算符号 +=
    - 扩充求余运算符 %，优先级等同于 +、-
    - 扩充乘方运算符 ^，优先级等同于 *、/
+4. 扩充比较运算符号
+   - 扩充大于 >

@@ -51,6 +51,7 @@ typedef enum
   ASSIGN,
   EQ,
   LT,
+  GT,
   PLUS,
   MINUS,
   TIMES,

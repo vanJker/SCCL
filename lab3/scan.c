@@ -112,6 +112,9 @@ TokenType getToken(void) { /* index for storing into tokenString */
             case '<':
               currentToken = LT;
               break;
+            case '>':
+              currentToken = GT;
+              break;
             case '+':
               if ((c = getNextChar()) == '=') {
                 currentToken = PLUSASSIGN;
