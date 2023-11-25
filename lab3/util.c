@@ -78,6 +78,18 @@ void printToken(TokenType token, const char *tokenString) {
     case POW:
       fprintf(listing, "^\n");
       break;
+    case REOR:
+      fprintf(listing, "|\n");
+      break;
+    case RECON:
+      fprintf(listing, "&\n");
+      break;
+    case RECLOSURE:
+      fprintf(listing, "#\n");
+      break;
+    case REOPTION:
+      fprintf(listing, "?\n");
+      break;
     case ENDFILE:
       fprintf(listing, "EOF\n");
       break;

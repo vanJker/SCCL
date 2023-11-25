@@ -61,6 +61,10 @@ typedef enum
   OVER,
   MOD,
   POW,
+  REOR,
+  RECON,
+  RECLOSURE,
+  REOPTION,
   LPAREN,
   RPAREN,
   SEMI } TokenType;

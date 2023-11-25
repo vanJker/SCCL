@@ -175,7 +175,7 @@ TreeNode* exp(void) {
 
 TreeNode* simple_exp(void) {
   TreeNode* t = mod_term();
-  while ((token == PLUS) || (token == MINUS)) {
+  while ((token == PLUS) || (token == MINUS) || (token == REOR)) {
     TreeNode* p = newExpNode(OpK);
     if (p != NULL) {
       p->child[0] = t;
@@ -205,7 +205,7 @@ TreeNode* mod_term(void) {
 
 TreeNode* term(void) {
   TreeNode* t = pow_factor();
-  while ((token == TIMES) || (token == OVER)) {
+  while ((token == TIMES) || (token == OVER) || (token == RECON)) {
     TreeNode* p = newExpNode(OpK);
     if (p != NULL) {
       p->child[0] = t;
@@ -220,14 +220,18 @@ TreeNode* term(void) {
 
 TreeNode* pow_factor(void) {
   TreeNode* t = factor();
-  while ((token == POW)) {
+  while ((token == POW) || (token == RECLOSURE) || (token == REOPTION)) {
     TreeNode* p = newExpNode(OpK);
     if (p != NULL) {
       p->child[0] = t;
       p->attr.op = token;
       t = p;
-      match(token);
-      p->child[1] = factor();
+      if (token == POW) {
+        match(token);
+        p->child[1] = factor();
+      } else {
+        match(token);
+      }
     }
   }
   return t;

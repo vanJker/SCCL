@@ -154,6 +154,18 @@ TokenType getToken(void) { /* index for storing into tokenString */
             case '^':
               currentToken = POW;
               break;
+            case '|':
+              currentToken = REOR;
+              break;
+            case '&':
+              currentToken = RECON;
+              break;
+            case '#':
+              currentToken = RECLOSURE;
+              break;
+            case '?':
+              currentToken = REOPTION;
+              break;
             case ')':
               currentToken = RPAREN;
               break;
