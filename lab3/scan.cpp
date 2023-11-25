@@ -52,7 +52,7 @@ static void ungetNextChar(void) {
 
 /* lookup table of reserved words */
 static struct {
-  char* str;
+  const char* str;
   TokenType tok;
 } reservedWords[MAXRESERVED] = {
     {"if", IF},         {"then", THEN},   {"else", ELSE},     {"end", END},

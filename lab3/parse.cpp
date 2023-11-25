@@ -32,7 +32,7 @@ static TreeNode* pow_factor(void);
 static TreeNode* factor(void);
 static TreeNode* for_stmt(void);
 
-static void syntaxError(char* message) {
+static void syntaxError(const char* message) {
   fprintf(listing, "\n>>> ");
   fprintf(listing, "Syntax error at line %d: %s", lineno, message);
   Error = TRUE;
