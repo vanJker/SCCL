@@ -24,6 +24,7 @@ static TreeNode* write_stmt(void);
 static TreeNode* exp(void);
 static TreeNode* simple_exp(void);
 static TreeNode* term(void);
+static TreeNode* pow_factor(void);
 static TreeNode* factor(void);
 static TreeNode* for_stmt(void);
 
@@ -187,8 +188,23 @@ TreeNode* simple_exp(void) {
 }
 
 TreeNode* term(void) {
+  TreeNode* t = pow_factor();
+  while ((token == TIMES) || (token == OVER)) {
+    TreeNode* p = newExpNode(OpK);
+    if (p != NULL) {
+      p->child[0] = t;
+      p->attr.op = token;
+      t = p;
+      match(token);
+      p->child[1] = pow_factor();
+    }
+  }
+  return t;
+}
+
+TreeNode* pow_factor(void) {
   TreeNode* t = factor();
-  while ((token == TIMES) || (token == OVER) || (token == POW)) {
+  while ((token == POW)) {
     TreeNode* p = newExpNode(OpK);
     if (p != NULL) {
       p->child[0] = t;

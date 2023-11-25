@@ -7,8 +7,8 @@ if (0 < x) { don't compute if x <= 0 }
   fact := 1;
   repeat
     fact := fact * x;
-    x := x ^ 2
+    x := x ^ 2 * 3
   until x = 0;
   write fact  { output factorial of x }
 else
-  fact := 2
+  fact := 2 + 3 * 4
