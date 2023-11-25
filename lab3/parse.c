@@ -321,13 +321,18 @@ TreeNode* for_stmt(void) {
   TreeNode* t = newStmtNode(ForK);
   match(FOR);
   if (t != NULL) t->child[0] = assign_stmt();
+  if (t != NULL) {
+    TreeNode* p = newExpNode(OpK);
+    if (p != NULL) p->attr.op = token;
+    t->child[1] = p;
+  }
   if (token == TO)
     match(TO);
   else if (token == DOWNTO)
     match(DOWNTO);
-  if (t != NULL) t->child[1] = exp();
+  if (t != NULL) t->child[2] = exp();
   match(DO);
-  if (t != NULL) t->child[2] = stmt_sequence();
+  if (t != NULL) t->child[3] = stmt_sequence();
   match(ENDDO);
   return t;
 }

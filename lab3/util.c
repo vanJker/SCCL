@@ -24,11 +24,15 @@ void printToken(TokenType token, const char *tokenString) {
     case READ:
     case WRITE:
     case FOR:
-    case TO:
-    case DOWNTO:
     case DO:
     case ENDDO:
       fprintf(listing, "reserved word: %s\n", tokenString);
+      break;
+    case TO:
+      fprintf(listing, "to\n");
+      break;
+    case DOWNTO:
+      fprintf(listing, "downto\n");
       break;
     case ASSIGN:
       fprintf(listing, ":=\n");

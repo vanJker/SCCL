@@ -97,7 +97,7 @@ typedef enum { OpK, ConstK, IdK } ExpKind;
 /* ExpType is used for type checking */
 typedef enum { Void, Integer, Boolean } ExpType;
 
-#define MAXCHILDREN 3
+#define MAXCHILDREN 4
 
 typedef struct treeNode {
   struct treeNode* child[MAXCHILDREN];

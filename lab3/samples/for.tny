@@ -3,7 +3,7 @@
   test new if statement grammer
 }
 read x; { input an integer }
-for x := 1 to 0 do { don't compute if x <= 0 }
+for x := (1 + 3) downto (a - 0) do { don't compute if x <= 0 }
   fact := 1;
   repeat
     fact := fact * x;

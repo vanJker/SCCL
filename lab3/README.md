@@ -6,12 +6,15 @@
 
 1. 改写 if 语句的语法
    - 原有语法：
-     - if_stmt -> if exp then stmt-sequence end
-     - if_stmt -> if exp then stmt-sequence else stmt-sequence end
+     - if_stmt -> if exp then stmt_sequence end
+     - if_stmt -> if exp then stmt_sequence else stmt_sequence end
    - 改写语法：
-     - if_stmt -> if (exp) stmt-sequence
-     - if_stmt -> if (exp) stmt-sequence else stmt-sequence
+     - if_stmt -> if (exp) stmt_sequence
+     - if_stmt -> if (exp) stmt_sequence else stmt_sequence
 2. 增加 for 循环语句
+   - for_stmt -> for indet := exp to exp do stmt_sequence enddo
+   - for_stmt -> for indet := exp downto exp do stmt_sequence enddo
+   - 在表达式树显示 to 和 downto 运算符
 3. 扩充算术表达式的运算符号
    - 扩充加法赋值运算符号 +=
    - 扩充求余运算符 %，优先级大于 +、-，小于 *、/
