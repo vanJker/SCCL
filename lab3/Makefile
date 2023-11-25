@@ -36,5 +36,5 @@ tiny: tiny.out
 
 all: tiny 
 
-test:
+test: tiny.out
 	python test.py

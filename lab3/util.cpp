@@ -109,10 +109,10 @@ void printToken(TokenType token, const char *tokenString) {
       fprintf(listing, "EOF\n");
       break;
     case NUM:
-      fprintf(listing, "NUM, val= %s\n", tokenString);
+      fprintf(listing, "NUM, val = %s\n", tokenString);
       break;
     case ID:
-      fprintf(listing, "ID, name= %s\n", tokenString);
+      fprintf(listing, "ID, name = %s\n", tokenString);
       break;
     case ERROR:
       fprintf(listing, "ERROR: %s\n", tokenString);

@@ -5,9 +5,9 @@ import sys
 def execute_command(file_path, flag, target):
     print('{}: ...'.format(file_path), end='')
 
-    command = 'tiny.out {}'.format(file_path)
+    command = 'tiny.out {} {}'.format(tiny_flag, file_path)
     test_output = subprocess.check_output(command, shell=True, text=True)
-    if flag == '-p' and (target == None or target == file_path):
+    if flag in ['-p', '--print'] and target in [None, file_path]:
         print(test_output)
 
     grep_command = 'grep error'
@@ -33,13 +33,17 @@ def traverse_folder(folder_path, flag, target):
         print("\n===ALL TESTS PASSED===\n")
             
 
-flag = None
+tiny_flag = None
 if len(sys.argv) >= 2:
-    flag = sys.argv[1];
+    tiny_flag = sys.argv[1];
+
+flag = None
+if len(sys.argv) >= 3:
+    flag = sys.argv[2];
 
 target = None
-if len(sys.argv) >= 3:
-    target = sys.argv[2].replace('/', '\\');
+if len(sys.argv) >= 4:
+    target = sys.argv[3].replace('/', '\\');
 
 samples_folder = 'samples'
 

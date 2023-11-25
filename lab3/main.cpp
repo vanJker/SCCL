@@ -6,29 +6,12 @@
 /****************************************************/
 
 #include "globals.h"
+#include "parse.h"
+#include "scan.h"
+#include "util.h"
 
 /* set NO_PARSE to TRUE to get a scanner-only compiler */
-#define NO_PARSE FALSE
-/* set NO_ANALYZE to TRUE to get a parser-only compiler */
-#define NO_ANALYZE TRUE
-
-/* set NO_CODE to TRUE to get a compiler that does not
- * generate code
- */
-#define NO_CODE TRUE
-
-#include "util.h"
-#if NO_PARSE
-#include "scan.h"
-#else
-#include "parse.h"
-#if !NO_ANALYZE
-#include "analyze.h"
-#if !NO_CODE
-#include "cgen.h"
-#endif
-#endif
-#endif
+static int NO_PARSE = 0;
 
 /* allocate global variables */
 int lineno = 0;
@@ -47,12 +30,25 @@ int Error = FALSE;
 
 int main(int argc, char* argv[]) {
   TreeNode* syntaxTree;
-  char pgm[120]; /* source code file name */
-  if (argc != 2) {
-    fprintf(stderr, "usage: %s <filename>\n", argv[0]);
+  char flag[120]; /* flag of program */
+  char pgm[120];  /* source code file name */
+
+  if (argc != 3) {
+    fprintf(stderr, "usage: %s <flag> <filename>\n", argv[0]);
     exit(1);
   }
-  strcpy(pgm, argv[1]);
+
+  strcpy(flag, argv[1]);
+  if (strcmp(flag, "-p") == 0 || strcmp(flag, "--parse") == 0) {
+    NO_PARSE = FALSE;
+  } else if (strcmp(flag, "-s") == 0 || strcmp(flag, "--scan") == 0) {
+    NO_PARSE = TRUE;
+  } else {
+    fprintf(stderr, "<flag> should be `-p` / `--parse` or `-s` / `--scan`");
+    exit(2);
+  }
+
+  strcpy(pgm, argv[2]);
   if (strchr(pgm, '.') == NULL) strcat(pgm, ".tny");
   source = fopen(pgm, "r");
   if (source == NULL) {
@@ -61,42 +57,20 @@ int main(int argc, char* argv[]) {
   }
   listing = stdout; /* send listing to screen */
   fprintf(listing, "\nTINY COMPILATION: %s\n", pgm);
-#if NO_PARSE
-  while (getToken() != ENDFILE)
-    ;
-#else
-  syntaxTree = parse();
-  if (TraceParse) {
-    fprintf(listing, "\nSyntax tree:\n");
-    // printTree(syntaxTree);
-    printSyntaxTree(syntaxTree);
-  }
-#if !NO_ANALYZE
-  if (!Error) {
-    if (TraceAnalyze) fprintf(listing, "\nBuilding Symbol Table...\n");
-    buildSymtab(syntaxTree);
-    if (TraceAnalyze) fprintf(listing, "\nChecking Types...\n");
-    typeCheck(syntaxTree);
-    if (TraceAnalyze) fprintf(listing, "\nType Checking Finished\n");
-  }
-#if !NO_CODE
-  if (!Error) {
-    char* codefile;
-    int fnlen = strcspn(pgm, ".");
-    codefile = (char*)calloc(fnlen + 4, sizeof(char));
-    strncpy(codefile, pgm, fnlen);
-    strcat(codefile, ".tm");
-    code = fopen(codefile, "w");
-    if (code == NULL) {
-      printf("Unable to open %s\n", codefile);
-      exit(1);
+
+  if (NO_PARSE) {
+    TokenType token;
+    while ((token = getToken()) != ENDFILE) {
+      printToken(token, tokenString);
     }
-    codeGen(syntaxTree, codefile);
-    fclose(code);
+  } else {
+    syntaxTree = parse();
+    if (TraceParse) {
+      fprintf(listing, "\nSyntax tree:\n");
+      // printTree(syntaxTree);
+      printSyntaxTree(syntaxTree);
+    }
   }
-#endif
-#endif
-#endif
   fclose(source);
   return 0;
 }
