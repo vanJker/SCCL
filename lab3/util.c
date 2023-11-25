@@ -17,7 +17,6 @@ void printToken(TokenType token, const char *tokenString) {
   switch (token) {
     case IF:
     case THEN:
-    case ELSE:
     case END:
     case REPEAT:
     case UNTIL:
@@ -27,6 +26,9 @@ void printToken(TokenType token, const char *tokenString) {
     case DO:
     case ENDDO:
       fprintf(listing, "reserved word: %s\n", tokenString);
+      break;
+    case ELSE:
+      fprintf(listing, "else\n");
       break;
     case TO:
       fprintf(listing, "to\n");

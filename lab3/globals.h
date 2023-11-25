@@ -43,6 +43,9 @@ typedef enum
   DOWNTO,
   DO,
   ENDDO,
+  BITAND,
+  BITOR,
+  BITNOT,
   /* multicharacter tokens */
   ID,
   NUM,
@@ -65,9 +68,6 @@ typedef enum
   RECON,
   RECLOSURE,
   REOPTION,
-  BITAND,
-  BITOR,
-  BITNOT,
   LPAREN,
   RPAREN,
   SEMI } TokenType;

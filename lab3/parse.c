@@ -114,8 +114,11 @@ TreeNode* if_stmt(void) {
   if (t != NULL) t->child[0] = exp();
   if (t != NULL) t->child[1] = stmt_sequence();
   if (token == ELSE) {
+    TreeNode* p = newExpNode(OpK);
+    if (p != NULL) p->attr.op = token;
+    if (t != NULL) t->child[2] = p;
     match(ELSE);
-    if (t != NULL) t->child[2] = stmt_sequence();
+    if (t != NULL) t->child[3] = stmt_sequence();
   }
   return t;
 }
