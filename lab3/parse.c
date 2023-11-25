@@ -23,6 +23,7 @@ static TreeNode* read_stmt(void);
 static TreeNode* write_stmt(void);
 static TreeNode* exp(void);
 static TreeNode* simple_exp(void);
+static TreeNode* mod_term(void);
 static TreeNode* term(void);
 static TreeNode* pow_factor(void);
 static TreeNode* factor(void);
@@ -173,15 +174,30 @@ TreeNode* exp(void) {
 }
 
 TreeNode* simple_exp(void) {
-  TreeNode* t = term();
-  while ((token == PLUS) || (token == MINUS) || (token == MOD)) {
+  TreeNode* t = mod_term();
+  while ((token == PLUS) || (token == MINUS)) {
     TreeNode* p = newExpNode(OpK);
     if (p != NULL) {
       p->child[0] = t;
       p->attr.op = token;
       t = p;
       match(token);
-      t->child[1] = term();
+      t->child[1] = mod_term();
+    }
+  }
+  return t;
+}
+
+TreeNode* mod_term(void) {
+  TreeNode* t = term();
+  while ((token == MOD)) {
+    TreeNode* p = newExpNode(OpK);
+    if (p != NULL) {
+      p->child[0] = t;
+      p->attr.op = token;
+      t = p;
+      match(token);
+      p->child[1] = term();
     }
   }
   return t;
