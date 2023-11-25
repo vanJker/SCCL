@@ -68,7 +68,8 @@ int main(int argc, char* argv[]) {
   syntaxTree = parse();
   if (TraceParse) {
     fprintf(listing, "\nSyntax tree:\n");
-    printTree(syntaxTree);
+    // printTree(syntaxTree);
+    printSyntaxTree(syntaxTree);
   }
 #if !NO_ANALYZE
   if (!Error) {

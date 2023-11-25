@@ -35,4 +35,6 @@ char* copyString(char*);
  */
 void printTree(TreeNode*);
 
+void printSyntaxTree(TreeNode*);
+
 #endif
