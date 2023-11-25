@@ -37,3 +37,6 @@
    - 支持运算符或 or
    - 支持运算符非 not
 8. 增加位运算表达式赋值语句
+9. 增加自动批量测试脚本
+   - 使用方法：`python test.py [--parse|-p|--scan|-s] [--print|-p] [<filename>]`
+10. 源文件约定：statement sequences 的最后一条 statement 不能带有分号，否则无法正常退出
