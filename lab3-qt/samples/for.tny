@@ -1,0 +1,13 @@
+{ Sample program
+  in TINY language -
+  test new if statement grammer
+}
+read x; { input an integer }
+for x := (1 + 3) downto (a - 0) do { don't compute if x <= 0 }
+  fact := 1;
+  repeat
+    fact := fact * x;
+    x := x - 1
+  until x = 0;
+  write fact  { output factorial of x }
+enddo
