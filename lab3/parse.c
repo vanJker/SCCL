@@ -22,6 +22,9 @@ static TreeNode* assign_stmt(void);
 static TreeNode* read_stmt(void);
 static TreeNode* write_stmt(void);
 static TreeNode* exp(void);
+static TreeNode* bitor_exp(void);
+static TreeNode* bitand_exp(void);
+static TreeNode* bitnot_exp(void);
 static TreeNode* simple_exp(void);
 static TreeNode* mod_term(void);
 static TreeNode* term(void);
@@ -158,7 +161,7 @@ TreeNode* write_stmt(void) {
 }
 
 TreeNode* exp(void) {
-  TreeNode* t = simple_exp();
+  TreeNode* t = bitor_exp();
   if ((token == LT) || (token == EQ) || (token == GT) || (token == LE) ||
       (token == GE) || (token == NE)) {
     TreeNode* p = newExpNode(OpK);
@@ -168,8 +171,58 @@ TreeNode* exp(void) {
       t = p;
     }
     match(token);
-    if (t != NULL) t->child[1] = simple_exp();
+    if (t != NULL) t->child[1] = bitor_exp();
   }
+  return t;
+}
+
+TreeNode* bitor_exp(void) {
+  TreeNode* t = bitand_exp();
+  while ((token == BITOR)) {
+    TreeNode* p = newExpNode(OpK);
+    if (p != NULL) {
+      p->child[0] = t;
+      p->attr.op = token;
+      t = p;
+      match(token);
+      t->child[1] = bitand_exp();
+    }
+  }
+  return t;
+}
+
+TreeNode* bitand_exp(void) {
+  TreeNode* t = bitnot_exp();
+  while ((token == BITAND)) {
+    TreeNode* p = newExpNode(OpK);
+    if (p != NULL) {
+      p->child[0] = t;
+      p->attr.op = token;
+      t = p;
+      match(token);
+      t->child[1] = bitnot_exp();
+    }
+  }
+  return t;
+}
+
+TreeNode* bitnot_exp(void) {
+  TreeNode *t = NULL, *q;
+  while ((token == BITNOT)) {
+    TreeNode* p = newExpNode(OpK);
+    if (p != NULL) {
+      p->attr.op = token;
+      if (t == NULL)
+        t = p;
+      else
+        q->child[0] = p;
+      q = p;
+      match(token);
+      if (token == BITNOT) continue;
+      q->child[0] = simple_exp();
+    }
+  }
+  if (t == NULL) t = simple_exp();
   return t;
 }
 

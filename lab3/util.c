@@ -90,6 +90,15 @@ void printToken(TokenType token, const char *tokenString) {
     case REOPTION:
       fprintf(listing, "?\n");
       break;
+    case BITAND:
+      fprintf(listing, "and\n");
+      break;
+    case BITOR:
+      fprintf(listing, "or\n");
+      break;
+    case BITNOT:
+      fprintf(listing, "not\n");
+      break;
     case ENDFILE:
       fprintf(listing, "EOF\n");
       break;

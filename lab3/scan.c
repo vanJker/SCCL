@@ -58,7 +58,7 @@ static struct {
     {"if", IF},         {"then", THEN},   {"else", ELSE},     {"end", END},
     {"repeat", REPEAT}, {"until", UNTIL}, {"read", READ},     {"write", WRITE},
     {"for", FOR},       {"to", TO},       {"downto", DOWNTO}, {"do", DO},
-    {"enddo", ENDDO}};
+    {"enddo", ENDDO},   {"and", BITAND},  {"or", BITOR},      {"not", BITNOT}};
 
 /* lookup an identifier to see if it is a reserved word */
 /* uses linear search */

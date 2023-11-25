@@ -23,7 +23,7 @@
 #endif
 
 /* MAXRESERVED = the number of reserved words */
-#define MAXRESERVED (8 + 5)
+#define MAXRESERVED (8 + 5 + 3)
 
 typedef enum
 /* book-keeping tokens */
@@ -65,6 +65,9 @@ typedef enum
   RECON,
   RECLOSURE,
   REOPTION,
+  BITAND,
+  BITOR,
+  BITNOT,
   LPAREN,
   RPAREN,
   SEMI } TokenType;
