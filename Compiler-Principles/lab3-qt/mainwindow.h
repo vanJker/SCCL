@@ -33,6 +33,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
+    std::string file_path;
+    QString file_content;
     std::string temp_file();
 };
 #endif // MAINWINDOW_H

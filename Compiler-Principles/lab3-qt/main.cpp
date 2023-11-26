@@ -12,10 +12,9 @@
 /* set NO_PARSE to TRUE to get a scanner-only compiler */
 #define NO_PARSE FALSE
 
-int lineno = 0;
+int lineno;
 FILE* source;
 FILE* listing;
-FILE* code;
 
 int EchoSource = FALSE;
 int TraceScan = FALSE;
@@ -27,6 +26,14 @@ int Error = FALSE;
 
 int main(int argc, char *argv[])
 {
+    EchoSource = FALSE;
+    TraceScan = FALSE;
+    TraceParse = TRUE;
+    TraceAnalyze = FALSE;
+    TraceCode = FALSE;
+    Error = FALSE;
+
+
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
