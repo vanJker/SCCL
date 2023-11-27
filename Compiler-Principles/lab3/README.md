@@ -55,17 +55,17 @@
 10. 源文件约定：statement sequences 的最后一条 statement 不能带有分号，否则无法正常退出
 
 主要文法如下变化：
-statement -> if_stmt | repeat_stmt | assgin_stmt | read_stmt | write_stmt | write_stmt | for_stmt
-exp→bitor_exp{ (< | = | > | <= | >= | <>) bitor_exp}
-bitor_exp→and_exp { or  bitand_exp}
-bitand_exp→bitnot_exp { and  bitnot_exp}
-bitnot_exp→not newExpNode_exp | simple_exp}
-simple_exp→mod_term{( + | - | ‘|’ )mod_ term};
-mod_term→term{%  term};
-term→pow_factor{( * | / | &) pow_factor}
-pow_factor→factor{( ^ | # | ? ) factor}
-factor→ID | NUM | (exp)
 
-if_stmt→if(exp) stmt-sequence [else stmt-sequence]
-for_stmt -> for ID = simple_exp ( to | downto ) exp1 do stmt_sequence enddo
+- statement -> if_stmt | repeat_stmt | assgin_stmt | read_stmt | write_stmt | write_stmt | for_stmt
+- exp -> bitor_exp { (< | = | > | <= | >= | <>) bitor_exp }
+- bitor_exp -> and_exp { or  bitand_exp }
+- bitand_exp -> bitnot_exp { and  bitnot_exp}
+- bitnot_exp -> (not)* simple_exp
+- simple_exp -> mod_term { ( + | - | ‘|’ ) mod_ term };
+- mod_term→term { %  term };
+- term→pow_factor { (* | / | &) pow_factor }
+- pow_factor→factor{ ( ^ | # | ? ) factor }
+- factor→ID | NUM | (exp)
+- if_stmt→if(exp) stmt-sequence [else stmt-sequence]
+- for_stmt -> for ID = simple_exp ( to | downto ) exp1 do stmt_sequence enddo
 
