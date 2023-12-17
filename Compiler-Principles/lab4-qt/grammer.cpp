@@ -1,5 +1,12 @@
 #include "grammer.h"
 
+string ACTIONS[] = {
+    "error",
+    "shift",
+    "reduce",
+    "accept",
+};
+
 void Grammer::buildNullableSet() {
   this->nullableSet = {};
 
@@ -158,7 +165,7 @@ LR0State Grammer::lr0Goto(LR0State C, char x) {
   return temp;
 }
 
-bool Grammer::processLR0State(LR0State& C) {
+bool Grammer::lr0ProcessLR0State(LR0State& C) {
   for (auto i : this->lr0StateSet) {
     if (i.items == C.items) {
       C.id = i.id;
@@ -173,17 +180,19 @@ bool Grammer::processLR0State(LR0State& C) {
   return true;
 }
 
-void Grammer::lr0Analysis() {
+void Grammer::buildLR0Table() {
   char l = ',';
   string r = "";
   r += this->startSymbol;
   r += EOF_;
   size_t pos = 0;
 
+  this->terminals.insert(EOF_);
+
   LR0State C0 =
       LR0State{.items = {LR0StateItem{.left = l, .right = r, .pos = pos}}};
   this->lr0Closure(C0);
-  auto isNewState = this->processLR0State(C0);
+  auto isNewState = this->lr0ProcessLR0State(C0);
   queue<LR0State> q;
   if (isNewState) q.push(C0);
 
@@ -194,9 +203,8 @@ void Grammer::lr0Analysis() {
     // terminals
     for (auto x : this->terminals) {
       auto D = this->lr0Goto(C, x);
-      this->lr0Closure(D);
 
-      isNewState = this->processLR0State(D);
+      isNewState = this->lr0ProcessLR0State(D);
       this->actionTable[C.id].insert({x, D.id});
 
       if (isNewState) q.push(D);
@@ -205,9 +213,81 @@ void Grammer::lr0Analysis() {
     // nonterminals
     for (auto x : this->nonterminals) {
       auto D = this->lr0Goto(C, x);
-      this->lr0Closure(D);
 
-      isNewState = this->processLR0State(D);
+      isNewState = this->lr0ProcessLR0State(D);
+      this->gotoTable[C.id].insert({x, D.id});
+
+      if (isNewState) q.push(D);
+    }
+  }
+}
+
+ACTION Grammer::slr1Goto(LR0State C, char x) {
+  auto temp = this->lr0Goto(C, x);
+  if (temp.items.empty()) {
+    // reduce
+    auto item = *C.items.begin();
+    if (C.items.size() == 1 &&
+        this->followSet[item.left].find(x) !=
+            this->followSet[item.left].end() &&
+        item.pos == item.right.length()) {
+      return REDUCE;
+    } else {
+      // error
+      return ERROR;
+    }
+  } else {
+    // accept
+    if (x == EOF_) return ACCEPT;
+    // shift
+    return SHIFT;
+  }
+}
+
+void Grammer::buildSLR1Table() {
+  char l = ',';
+  string r = "";
+  r += this->startSymbol;
+  r += EOF_;
+  size_t pos = 0;
+
+  this->terminals.insert(EOF_);
+  this->productions[l] = {r};
+  this->buildNullableSet();
+  this->buildFirstSet();
+  this->buildFollowSet();
+
+  LR0State C0 =
+      LR0State{.items = {LR0StateItem{.left = l, .right = r, .pos = pos}}};
+  this->lr0Closure(C0);
+  auto isNewState = this->lr0ProcessLR0State(C0);
+  queue<LR0State> q;
+  if (isNewState) q.push(C0);
+
+  while (!q.empty()) {
+    auto C = q.front();
+    q.pop();
+
+    // terminals
+    for (auto x : this->terminals) {
+      auto act = this->slr1Goto(C, x);
+      LR0State D;
+      if (act == SHIFT) {
+        D = this->lr0Goto(C, x);
+      }
+
+      isNewState = this->lr0ProcessLR0State(D);
+      this->actionTable[C.id].insert({x, D.id});
+      this->slr1ActionTable[C.id].insert({x, act});
+
+      if (isNewState) q.push(D);
+    }
+
+    // nonterminals
+    for (auto x : this->nonterminals) {
+      auto D = this->lr0Goto(C, x);
+
+      isNewState = this->lr0ProcessLR0State(D);
       this->gotoTable[C.id].insert({x, D.id});
 
       if (isNewState) q.push(D);

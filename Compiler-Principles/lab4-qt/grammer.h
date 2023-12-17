@@ -19,6 +19,15 @@ using std::string;
 const string EMPTY = "@";
 const char EOF_ = '$';
 
+enum ACTION {
+  ERROR,
+  SHIFT,
+  REDUCE,
+  ACCEPT,
+};
+
+extern string ACTIONS[];
+
 struct LR0StateItem {
   /* data */
   char left;
@@ -58,14 +67,19 @@ class Grammer {
   map<size_t, map<char, size_t>> actionTable;
   map<size_t, map<char, size_t>> gotoTable;
 
+  map<size_t, map<char, ACTION>> slr1ActionTable;
+
   void buildNullableSet();
   void buildFirstSet();
   void buildFollowSet();
 
   void lr0Closure(LR0State&);
   LR0State lr0Goto(LR0State, char);
-  bool processLR0State(LR0State &);
-  void lr0Analysis();
+  bool lr0ProcessLR0State(LR0State &);
+  void buildLR0Table();
+
+  ACTION slr1Goto(LR0State, char);
+  void buildSLR1Table();
 
  public:
   // Grammer(/* args */);
