@@ -158,6 +158,63 @@ LR0State Grammer::lr0Goto(LR0State C, char x) {
   return temp;
 }
 
+bool Grammer::processLR0State(LR0State& C) {
+  for (auto i : this->lr0StateSet) {
+    if (i.items == C.items) {
+      C.id = i.id;
+      return false;
+    }
+  }
+
+  // new state
+  C.id = this->stateIdCount++;
+  this->lr0StateTable[C.id] = C;
+  this->lr0StateSet.insert(C);
+  return true;
+}
+
+void Grammer::lr0Analysis() {
+  char l = ',';
+  string r = "";
+  r += this->startSymbol;
+  r += EOF_;
+  size_t pos = 0;
+
+  LR0State C0 =
+      LR0State{.items = {LR0StateItem{.left = l, .right = r, .pos = pos}}};
+  this->lr0Closure(C0);
+  auto isNewState = this->processLR0State(C0);
+  queue<LR0State> q;
+  if (isNewState) q.push(C0);
+
+  while (!q.empty()) {
+    auto C = q.front();
+    q.pop();
+
+    // terminals
+    for (auto x : this->terminals) {
+      auto D = this->lr0Goto(C, x);
+      this->lr0Closure(D);
+
+      isNewState = this->processLR0State(D);
+      this->actionTable[C.id].insert({x, D.id});
+
+      if (isNewState) q.push(D);
+    }
+
+    // nonterminals
+    for (auto x : this->nonterminals) {
+      auto D = this->lr0Goto(C, x);
+      this->lr0Closure(D);
+
+      isNewState = this->processLR0State(D);
+      this->gotoTable[C.id].insert({x, D.id});
+
+      if (isNewState) q.push(D);
+    }
+  }
+}
+
 bool LR0StateItem::operator<(const LR0StateItem& rhs) const {
   if (this->left < rhs.left) return true;
   if (this->left > rhs.left) return false;
@@ -171,6 +228,10 @@ bool LR0StateItem::operator<(const LR0StateItem& rhs) const {
   return false;
 }
 
+bool LR0StateItem::operator==(const LR0StateItem& rhs) const {
+  return this->left == rhs.left && this->right == rhs.right && this->pos == rhs.pos;
+}
+
 string LR0StateItem::toStr() {
   string str = "";
   str += this->left;
@@ -181,6 +242,13 @@ string LR0StateItem::toStr() {
   }
   if (this->pos == this->right.length()) str += ".";
   return str;
+}
+
+bool LR0State::operator<(const LR0State& rhs) const {
+  if (this->id < rhs.id) return true;
+  if (this->id > rhs.id) return false;
+
+  return this->items < rhs.items;
 }
 
 string LR0State::toStr() {

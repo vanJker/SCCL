@@ -70,6 +70,34 @@ int main(int argc, char *argv[])
     auto S1 = g2.lr0Goto(S0, x);
     cout << S1.toStr() << endl;
 
+    cout << "\n LR0 \n" << endl;
+    Grammer g3;
+    g3.nonterminals = {'S', 'T'};
+    g3.terminals = {'x', 'y'};
+    g3.productions = {{'S', {"xxT"}}, {'T', {"y"}}};
+
+    g3.startSymbol = 'S';
+    g3.stateIdCount = 0;
+    g3.lr0Analysis();
+
+    for (auto s: g3.lr0StateSet) {
+        cout << s.id << ":" << endl;
+        cout << s.toStr() << endl;
+
+        cout << "Action:" << endl;
+        for (auto act: g3.actionTable[s.id]) {
+            cout << "-" << act.first << "->" << act.second << endl;
+        }
+        cout << endl;
+
+        cout << "Goto:" << endl;
+        for (auto act: g3.gotoTable[s.id]) {
+            cout << "-" << act.first << "->" << act.second << endl;
+        }
+        cout << endl;
+
+    }
+
     std::cout.flush();
 
     return 0;
