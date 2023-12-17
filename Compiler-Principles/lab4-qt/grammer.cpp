@@ -124,3 +124,67 @@ void Grammer::buildFollowSet() {
     }
   }
 }
+
+void Grammer::lr0Closure(LR0State& C) {
+  bool isChanged = true;
+  while (isChanged) {
+    isChanged = false;
+    auto beforeSize = C.items.size();
+
+    for (auto i : C.items) {
+      auto B = i.right[i.pos];
+      if (!isupper(B)) continue;
+
+      for (auto p : this->productions[B]) {
+        C.items.insert(LR0StateItem{.left = B, .right = p, .pos = 0});
+      }
+    }
+
+    if (C.items.size() != beforeSize) {
+      isChanged = true;
+    }
+  }
+}
+
+LR0State Grammer::lr0Goto(LR0State C, char x) {
+  LR0State temp = {.items = {}};
+  for (auto i : C.items) {
+    if (i.pos + 1 == i.right.length()) continue;
+
+    temp.items.insert(
+        LR0StateItem{.left = i.left, .right = i.right, .pos = i.pos + 1});
+  }
+  this->lr0Closure(temp);
+  return temp;
+}
+
+bool LR0StateItem::operator<(const LR0StateItem& rhs) const {
+  if (this->left < rhs.left) return true;
+  if (this->left > rhs.left) return false;
+
+  if (this->right < rhs.right) return true;
+  if (this->right > rhs.right) return false;
+
+  if (this->pos < rhs.pos) return true;
+  if (this->pos > rhs.pos) return false;
+}
+
+string LR0StateItem::toStr() {
+  string str = "";
+  str += this->left;
+  str += " -> ";
+  for (auto i = 0; i < this->right.length(); i++) {
+    if (i == this->pos) str += ".";
+    str += this->right[i];
+  }
+  return str;
+}
+
+string LR0State::toStr() {
+  string str = "";
+  for (auto item : items) {
+    str += item.toStr() + "\n";
+  }
+  return str;
+}
+

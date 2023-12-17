@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
 
 
     cout << "hello" << endl;
+
+    cout << "\n First & Follow \n" << endl;
     Grammer g;
     g.nonterminals = {'X', 'Y', 'Z'};
     g.terminals = {'a', 'c', 'd'};
@@ -44,6 +46,24 @@ int main(int argc, char *argv[])
       }
       cout << " }" << endl;
     }
+
+
+    cout << "\n Closure & Goto \n" << endl;
+    Grammer g2;
+    g2.nonterminals = {'S', 'E', 'T', 'F'};
+    g2.terminals = {'n'};
+    g2.productions = {
+          {'S', {"E"}}, {'E', {"E+T", "T"}}, {'T', {"T*F", "F"}}, {'F', {"n"}}};
+
+    LR0StateItem item = LR0StateItem{.left = 'S', .right = "E", .pos = 0};
+    LR0State S0 = {.items = {item}};
+
+    cout << S0.toStr() << endl;
+    g2.lr0Closure(S0);
+    cout << S0.toStr() << endl;
+
+    auto S1 = g2.lr0Goto(S0, 'E');
+    cout << S1.toStr() << endl;
 
     std::cout.flush();
 

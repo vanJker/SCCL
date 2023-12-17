@@ -16,6 +16,23 @@ using std::string;
 
 const string EMPTY = "@";
 
+struct LR0StateItem {
+  /* data */
+  char left;
+  string right;
+  size_t pos;
+
+  string toStr();
+  bool operator<(const LR0StateItem &rhs) const;
+};
+
+struct LR0State {
+  /* data */
+  set<LR0StateItem> items;
+
+  string toStr();
+};
+
 class Grammer {
   //  private:
  public:
@@ -31,6 +48,9 @@ class Grammer {
   void buildNullableSet();
   void buildFirstSet();
   void buildFollowSet();
+
+  void lr0Closure(LR0State&);
+  LR0State lr0Goto(LR0State, char);
 
  public:
   // Grammer(/* args */);
