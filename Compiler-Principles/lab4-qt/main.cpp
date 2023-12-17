@@ -58,11 +58,16 @@ int main(int argc, char *argv[])
     LR0StateItem item = LR0StateItem{.left = 'S', .right = "E", .pos = 0};
     LR0State S0 = {.items = {item}};
 
+    cout << "Before Closure:" << endl;
     cout << S0.toStr() << endl;
+
+    cout << "After Closure:" << endl;
     g2.lr0Closure(S0);
     cout << S0.toStr() << endl;
 
-    auto S1 = g2.lr0Goto(S0, 'E');
+    char x = 'E';
+    cout << "Goto " << x << ":" << endl;
+    auto S1 = g2.lr0Goto(S0, x);
     cout << S1.toStr() << endl;
 
     std::cout.flush();

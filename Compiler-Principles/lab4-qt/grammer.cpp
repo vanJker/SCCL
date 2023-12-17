@@ -149,7 +149,7 @@ void Grammer::lr0Closure(LR0State& C) {
 LR0State Grammer::lr0Goto(LR0State C, char x) {
   LR0State temp = {.items = {}};
   for (auto i : C.items) {
-    if (i.pos + 1 == i.right.length()) continue;
+    if (i.right[i.pos] != x) continue;
 
     temp.items.insert(
         LR0StateItem{.left = i.left, .right = i.right, .pos = i.pos + 1});
@@ -167,6 +167,8 @@ bool LR0StateItem::operator<(const LR0StateItem& rhs) const {
 
   if (this->pos < rhs.pos) return true;
   if (this->pos > rhs.pos) return false;
+
+  return false;
 }
 
 string LR0StateItem::toStr() {
@@ -177,6 +179,7 @@ string LR0StateItem::toStr() {
     if (i == this->pos) str += ".";
     str += this->right[i];
   }
+  if (this->pos == this->right.length()) str += ".";
   return str;
 }
 
